@@ -1,17 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './pagination.css';
+import LinkedList from '../utils/linkedList';
+
+let ll = new LinkedList();
 
 const Pagination = ({ currentPage, onPageChange }) => {
+
+  const handlePrevClick = () => {
+    if (!ll.isEmpty()) {
+      ll.goToPrev();
+      onPageChange(ll.getCurrentPage());
+    }
+  };
+
+
+  const handleNextClick = () => {
+    ll.goToNext();
+    onPageChange(ll.getCurrentPage());
+  };
+
+  
   return (
     <div className="pagination">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={handlePrevClick}
         disabled={currentPage === 1}
       >
         Previous
       </button>
-      <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
+      <button onClick={handleNextClick}>
+        Next
+      </button>
     </div>
   );
 };
