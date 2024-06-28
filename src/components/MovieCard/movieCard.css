@@ -1,0 +1,50 @@
+ /* Movie Card Styles */
+ .movie-card {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .movie-card img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .movie-details {
+    padding: 15px;
+  }
+  
+  .movie-details h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+  }
+  
+  .movie-details p {
+    font-size: 0.9em;
+    margin: 5px 0;
+  }
+  
+  .movie-details strong {
+    color: #ff6f61;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .movie-card {
+      width: 45%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .movie-card {
+      width: 100%;
+    }
+  }
+  
