@@ -24,5 +24,5 @@ To run this project locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository_url>
-   cd kodo
+   git clone https://github.com/vermaprince123/PopularMovies.git
+ 
