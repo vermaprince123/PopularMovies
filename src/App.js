@@ -5,6 +5,7 @@ import Pagination from './components/pagination/Pagination';
 import Loader from './components/Loader/Loader';
 import Search from './components/Search/Search';
 import './app.css';
+import ScrollButton from './components/ScrollButton/ScrollButton';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -61,6 +62,7 @@ const App = () => {
 
   return (
     <div className="app">
+      <ScrollButton />
       <h1>Popular Movies</h1>
       <Search onSearch={handleSearch} onFilterChange={handleFilterChange} />
       <div className="movies-container">
