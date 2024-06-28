@@ -11,7 +11,7 @@ const MovieCard = ({ movie }) => {
         />
         <div className="movie-details">
           <h2>{title}</h2>
-          <p><strong>Release Date:</strong> {release_date}</p>
+          <p><strong>Release Date:</strong>{release_date}</p>
           <p><strong>Rating:</strong> {vote_average} ({vote_count} votes)</p>
           <p><strong>Overview:</strong> {overview}</p>
         </div>
