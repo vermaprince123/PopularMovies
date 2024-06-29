@@ -1,42 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './pagination.css';
 import LinkedList from '../../utils/linkedList';
 
-const Pagination = ({ currentPage, onPageChange,totalPage }) => {
+let llRef;
 
-  //ll - linkedlist
-  const [ll,setll] = useState(null);
+const Pagination = ({ currentPage, onPageChange, totalPage }) => {
 
-  useEffect(()=>{
-    setll(new LinkedList(currentPage,totalPage))
-  },[]);
+  useEffect(() => {
+    // Initialize the LinkedList only once
+    if (!llRef) {
+      llRef = new LinkedList(currentPage, totalPage);
+    }
+  }, [currentPage, totalPage]);
 
   const handlePrevClick = () => {
-    const current = ll.goToPrev();
+    const current = llRef?.goToPrev();
+    if (current) {
+      onPageChange(current.data);
+    }
+  };
+
+  const handleNextClick = () => {
+    const current = llRef?.goToNext();
+    console.log(current)
     if (current) {
       onPageChange(current.data);
     }
   };
 
 
-  const handleNextClick = () => {
-    const current = ll.goToNext();
-    if(current){
-      onPageChange(current.data);
-    }
-  };
-
-  
   return (
     <div className="pagination">
-      <button
-        onClick={handlePrevClick}
-        disabled={ll?.isOnFirst()}
-      >
+      <button onClick={handlePrevClick} disabled={llRef?.isOnFirst() ?? 1}>
         Previous
       </button>
-      <button onClick={handleNextClick} disabled={ll?.isOnLast()}>
+      <button onClick={handleNextClick} disabled={llRef?.isOnLast()}>
         Next
       </button>
     </div>
@@ -46,6 +45,7 @@ const Pagination = ({ currentPage, onPageChange,totalPage }) => {
 Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
+  totalPage: PropTypes.number.isRequired,
 };
 
 export default Pagination;

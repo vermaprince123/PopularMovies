@@ -9,6 +9,7 @@ import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import FilterDropdown from '../../components/FilterDropDown/FilterDropDown'; // Import the FilterDropdown component
 import './movie.css';
 import { languageOptions, yearOptions, regionOptions } from '../../utils/constant'; // Import filter options
+import { getFromCache, putIntoCache } from '../../utils/cache'; // Import caching functions
 
 const Movies = () => {
   // State and Refs
@@ -16,28 +17,48 @@ const Movies = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null); // State to store error
-  const totalPages = useRef(0);
+  const totalPages = useRef(1);
   const [queryParams, setQueryParams] = useState({
     include_adult: false,
     language: 'en-US',
     primary_release_year: '',
-    page: 1,
     region: '',
-    year: ''
+    year: '',
+    page:1
   });
 
   // Fetch movies effect
   useEffect(() => {
-    fetchMoviesData(currentPage, queryParams);
-  }, [currentPage, queryParams]);
+    fetchMoviesData(queryParams);
+  }, [queryParams,currentPage]);
 
-  const fetchMoviesData = async (page, params) => {
+  const fetchMoviesData = async (params) => {
+    console.log(params,currentPage)
     setLoading(true);
     setError(null); // Reset error state before fetching
     try {
-      const data = await fetchMovies({ ...params, page });
+      // Generate cache key based on params to uniquely identify the request
+      const cacheKey = JSON.stringify({
+        ...params,
+        page: currentPage // Use currentPage as the page key
+      });
+
+      // Check if data exists in cache
+      const cachedData = getFromCache(cacheKey);
+      if (cachedData) {
+        setMovies(cachedData);
+        totalPages.current = cachedData.total_pages;
+        setLoading(false);
+        return;
+      }
+
+      // Fetch data from API if not found in cache
+      const data = await fetchMovies({ ...params, page: currentPage });
       setMovies(data.results);
       totalPages.current = data.total_pages;
+
+      // Cache fetched data for future use
+      putIntoCache(cacheKey, data.results);
     } catch (error) {
       console.error('Error fetching movies:', error);
       setError('Failed to fetch movies. Please try again later.'); // Set error message
@@ -97,8 +118,8 @@ const Movies = () => {
       {/* Pagination */}
       {!error && !loading && movies.length > 0 && (
         <Pagination
-          totalPage={totalPages.current}
-          currentPage={currentPage}
+          totalPage={totalPages.current ?? 1}
+          currentPage={currentPage ?? 1}
           onPageChange={handlePageChange}
         />
       )}
