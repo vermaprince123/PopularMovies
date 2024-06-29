@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1c1c1c 0%, #3a3a3a 100%);
+    color: #fff;
+  }
+  
+  .login-container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1c1c1c 0%, #3a3a3a 100%);
+  }
+  
+  .login-image {
+    flex: 1;
+    background: url('../../images/movie-login.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100%;
+    max-width: 50%; /* Adjust the maximum width of the image */
+  }
+  
+  .login-form-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-form {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 24px;
+    color: #fff;
+    font-size: 24px;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #aaa;
+    font-weight: bold;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .input-group input:focus {
+    border-color: #667eea;
+    outline: none;
+  }
+  
+  .error {
+    margin-bottom: 20px;
+    color: #e74c3c;
+    font-size: 14px;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #667eea;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #5a67d8;
+  }
+  
+  @media (max-width: 1200px) {
+    .login-image {
+      max-width: 40%; /* Adjust the maximum width of the image */
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .login-image {
+      display: none;
+    }
+    
+    .login-form-container {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .login-container {
+      flex-direction: column;
+    }
+  
+    .login-form {
+      padding: 30px; /* Adjust padding for smaller screens */
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    .input-group input {
+      padding: 10px;
+    }
+  
+    .login-button {
+      padding: 10px;
+    }
+  }
+  

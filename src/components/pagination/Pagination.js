@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './pagination.css';
-import LinkedList from '../utils/linkedList';
+import LinkedList from '../../utils/linkedList';
 
-let ll = new LinkedList();
+const Pagination = ({ currentPage, onPageChange,totalPage }) => {
 
-const Pagination = ({ currentPage, onPageChange }) => {
+  //ll - linkedlist
+  const [ll,setll] = useState(null);
+
+  useEffect(()=>{
+    setll(new LinkedList(currentPage,totalPage))
+  },[]);
 
   const handlePrevClick = () => {
-    if (!ll.isEmpty()) {
-      ll.goToPrev();
-      onPageChange(ll.getCurrentPage());
+    const current = ll.goToPrev();
+    if (current) {
+      onPageChange(current.data);
     }
   };
 
 
   const handleNextClick = () => {
-    ll.goToNext();
-    onPageChange(ll.getCurrentPage());
+    const current = ll.goToNext();
+    if(current){
+      onPageChange(current.data);
+    }
   };
 
   
@@ -25,11 +32,11 @@ const Pagination = ({ currentPage, onPageChange }) => {
     <div className="pagination">
       <button
         onClick={handlePrevClick}
-        disabled={currentPage === 1}
+        disabled={ll?.isOnFirst()}
       >
         Previous
       </button>
-      <button onClick={handleNextClick}>
+      <button onClick={handleNextClick} disabled={ll?.isOnLast()}>
         Next
       </button>
     </div>

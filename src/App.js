@@ -1,84 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { fetchMovies } from './services/apiService';
-import MovieCard from './components/MovieCard/MovieCard';
-import Pagination from './components/pagination/Pagination';
-import Loader from './components/Loader/Loader';
-import Search from './components/Search/Search';
-import './app.css';
-import ScrollButton from './components/ScrollButton/ScrollButton';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
+const Movies = lazy(() => import('./page/Movie/Movie'));
+const Login = lazy(() => import('./page/Login/Login'));
 
 const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [queryParams, setQueryParams] = useState({
-    include_adult: false,
-    language: 'en-US',
-    primary_release_year: '',
-    page: 1,
-    region: '',
-    year: ''
-  });
-
-  useEffect(() => {
-    fetchMoviesData(currentPage, queryParams);
-  }, [currentPage, queryParams]);
-
-  const fetchMoviesData = async (page, params) => {
-    setLoading(true);
-    try {
-      const data = await fetchMovies({ ...params, page });
-      setMovies(data.results);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    setQueryParams({
-      include_adult: false,
-      language: 'en-US',
-      primary_release_year: '',
-      page: 1,
-      region: '',
-      year: ''
-    });
-  };
-
-  const handleFilterChange = (name, value) => {
-    setQueryParams(prevParams => ({
-      ...prevParams,
-      [name]: value
-    }));
-  };
-
   return (
-    <div className="app">
-      <ScrollButton />
-      <h1>Popular Movies</h1>
-      <Search onSearch={handleSearch} onFilterChange={handleFilterChange} />
-      <div className="movies-container">
-        {loading ? (
-          <Loader />
-        ) : (
-          movies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))
-        )}
+    <Router>
+      <div className="app">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/movie" element={<PrivateRoute component={Movies} />} />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </Suspense>
       </div>
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
-    </div>
+    </Router>
+  );
+};
+
+const PrivateRoute = ({ component: Component }) => {
+  return sessionStorage.getItem('authToken') ? (
+    <Component />
+  ) : (
+    <Navigate to="/login" />
   );
 };
 

@@ -2,7 +2,7 @@ import React from "react";
 import './movieCard.css';
 
 const MovieCard = ({ movie }) => {
-    const { poster_path, title, release_date, vote_average, vote_count, overview} = movie ?? {};
+    const { poster_path, title, release_date, vote_average, vote_count} = movie ?? {};
     return (
       <div className="movie-card">
         <img 
@@ -13,7 +13,6 @@ const MovieCard = ({ movie }) => {
           <h2>{title}</h2>
           <p><strong>Release Date:</strong>{release_date}</p>
           <p><strong>Rating:</strong> {vote_average} ({vote_count} votes)</p>
-          <p><strong>Overview:</strong> {overview}</p>
         </div>
       </div>
     );

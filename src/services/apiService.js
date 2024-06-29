@@ -3,9 +3,25 @@ import axiosInstance from './interceptor';
 
 
 export const fetchMovies = async (query) => {
-  const url = ApiConfig.discoverMovie;
   try {
-    const response = await axiosInstance.get(url, { params:{ ...query }});
+    const response = await axiosInstance.get(ApiConfig.discoverMovie, { params:{ ...query }});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loginUser = async (credentials) => {
+  /*
+    //i dont have login api so i am returning fake response
+    return {
+      data:{
+        token:'dummy_token'
+      }
+    }
+  */
+  try {
+    const response = await axiosInstance.post(ApiConfig.login, credentials);
     return response.data;
   } catch (error) {
     throw error;
