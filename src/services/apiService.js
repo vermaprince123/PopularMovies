@@ -12,14 +12,13 @@ export const fetchMovies = async (query) => {
 };
 
 export const loginUser = async (credentials) => {
-  /*
-    //i dont have login api so i am returning fake response
+  
     return {
       data:{
         token:'dummy_token'
       }
     }
-  */
+  
   try {
     const response = await axiosInstance.post(ApiConfig.login, credentials);
     return response.data;
